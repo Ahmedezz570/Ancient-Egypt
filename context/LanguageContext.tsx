@@ -298,22 +298,13 @@ const translations = {
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem("language");
-    return (saved === "ar" || saved === "en") ? saved : "en";
-  });
-
+  const [language, setLanguage] = useState<Language>("en");
   const isRTL = language === "ar";
 
   useEffect(() => {
-    localStorage.setItem("language", language);
     document.documentElement.lang = language;
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
   }, [language, isRTL]);
-
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-  };
 
   const t = (key: string): string => {
     return translations[language][key as keyof typeof translations.en] || key;
